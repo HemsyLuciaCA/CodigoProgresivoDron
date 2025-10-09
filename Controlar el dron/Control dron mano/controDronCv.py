@@ -5,7 +5,7 @@ from pymavlink import mavutil #para mensajes crudos MAVLink, estructura del prot
 print("connecting....")
 
 #vehicle=connect('udp:192.168.137.161:199w0')
-vehicle=connect('udp:192.168.155.28:19980') #conexión con el dron (ip y puerto de la laptop)
+vehicle=connect('udp:192.168.155.28:19980', wait_ready=True, heartbeat_timeout=60) #conexión con el dron (ip y puerto de la laptop)
 
 gnd_speed = 0.25 #velocidad base estándar en m/s para movimientos
 print("connecting..2..")
@@ -34,7 +34,7 @@ def arm_and_takeoff(altitude):
             break
         time.sleep(5)
 
-def set_velocity_body(vehicle, vx, vy, vz):
+def set_velocity_body(vehicle, vx, vy, vz): #vz, negativo = subir, positivo = bajar
     """ Remember: vz es la velocidad de descenso!!!
     http://ardupilot.org/dev/docs/copter-commands-in-guided-mode.html #-- Documentación de referencia, se explica como mandar comandos de posición y velocidad al dron en modo GUIDED
     
@@ -78,7 +78,7 @@ while True:
     time.sleep(1) #lee el archivo cada segundo
     if command == 'Up':
         print("Arriba") #en realidad va a ir hacia adelante
-        set_velocity_body(vehicle, gnd_speed, 0, 0)
+        set_velocity_body(vehicle, 0, 0, -gnd_speed)
     #elif command == 'r': SE VA A IR HACIA ARRIBA NOOO ACTIVAR
     #        print("\n\n\bModo RTL seleccionado--> sigua con la misma señal para confirmar")
     #        time.sleep(1)
@@ -90,7 +90,7 @@ while True:
     #            time.sleep(25) 
     elif command == 'Down':
         print("abajo") #en realidad va a ir hacia atrás
-        set_velocity_body(vehicle,-gnd_speed, 0, 0)
+        set_velocity_body(vehicle,0, 0, gnd_speed)
     elif command == 'Left':
         print("izquierda")
         set_velocity_body(vehicle, 0, -gnd_speed, 0)

@@ -1,4 +1,8 @@
 /*
 !/calcular distancia/
 !/controlar el dron/
+!/stream video udp o conexio mavlink/
+!/Persecusion/
 !.gitignore
+*.pt
+*pt
